@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia"> -->
+    <title>Document</title>
+    <link rel="stylesheet" href="weather_app.css">
+   
+  </head>
+  <body>
+      
+      <h3 >Weather App</h3>
+    
+    <form >
+      <div id="wrong" style=" background-color: red; color: #fbfdff;   font-weight: bold; " >Sorry, City not found</div>
+      <input type="text" id= "city" placeholder="City's Name" >
+      
+      <input type="button"id="submit" value="search" >
+   
+  </form>
+  <br>
+
+<div class="container">
+    
+    <div class="widget">
+      <div class="details" >
+          
+        <div class="temperature" id="temp">1</div>
+        <div class="summary"  >
+          <p class="summaryText" id="desc" >1</p>
+        </div>
+        <div class="precipitation" id="humidity">1</div>
+        <div class="wind" id="pressure">1</div>
+      </div>
+      <div class="pictoBackdrop"></div>
+      <div class="pictoFrame"></div>
+      <div class="pictoCloudBig"></div>
+      <div class="pictoCloudFill"></div>
+      <div class="pictoCloudSmall"></div>
+      <div class="iconCloudBig"></div>
+      <div class="iconCloudFill"></div>
+      <div class="iconCloudSmall"></div>
+    </div>
+  </div>
+  
+
+    <script>
+      
+    document.addEventListener('DOMContentLoaded', function(){
+        
+       document.querySelector('#submit').onclick= function(){
+       
+        // let x = document.getElementsByClassName('container').style.display = "block";
+        let weather = document.getElementById('city').value;
+       
+            fetch (`http://api.openweathermap.org/data/2.5/weather?q=${weather}&units=metric&appid=77c0497ead6a5385cae9c883aba04c60`)
+            .then(response =>  response.json())
+            .then(data =>{
+              
+              console.log(data)
+              console.log(weather)
+              console.log(data.clouds)
+            //   console.log(data.weather[0].description)
+            //   console.log(description)
+            //    let city = data[weather]
+            //     // let temperature = data.main.temp
+            //     let Cityname = data[weather];
+            //     document.getElementById('results').innerHTML = data.name;
+                if (city!==  undefined && data.clouds !== undefined ){
+                
+                    // document.getElementById('place').innerHTML =  `City: ${weather}`
+                    document.getElementById('temp').innerHTML = `${Math.round(data.main.temp)}`
+                    document.getElementById('desc').innerHTML = `${data.weather[0].description}`         
+                    document.getElementById('humidity').innerText = ` Humidity: ${data.main.humidity}`
+                    document.getElementById('pressure').innerHTML = ` wind: ${data.wind.speed}mph`
+                  
+                }if  (data.cod === "404"){
+                    // document.querySelector('#results').innerHTML = `INVALID CITY`
+                    // document.getElementById('place').innerHTML = `City :  ${weather}`
+                //   document.getElementById('place').innerHTML= "Sorry, City not found";
+
+
+                    document.getElementById("wrong").style.display = "block";
+
+                    // document.getElementById('temp').style.display = "none";
+                    // document.getElementById('desc').style.display = "none";
+                    // document.getElementById('humidity').style.display = "none";
+                    // document.getElementById('pressure').style.display = "none";
+                   
+                    setTimeout(location.reload.bind(location), 2000);
+
+}})
+return false; 
+    }})
+       
+    </script>
+   
+</body>
+</html>
